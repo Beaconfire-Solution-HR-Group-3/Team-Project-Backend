@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Controller
+@CrossOrigin
 @RequestMapping()
 public class RegisterController {
     @Autowired

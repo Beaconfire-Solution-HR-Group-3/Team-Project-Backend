@@ -4,6 +4,6 @@ import com.example.hrteamproject.Pojo.RegistrationToken;
 import com.example.hrteamproject.Pojo.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface RegistrationTokenRepository extends JpaRepository<RegistrationTokenRepository,String> {
+public interface RegistrationTokenRepository extends JpaRepository<RegistrationToken,String> {
     RegistrationToken findByToken(String token);
 }
