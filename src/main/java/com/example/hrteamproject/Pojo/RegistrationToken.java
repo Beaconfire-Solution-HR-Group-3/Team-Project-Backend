@@ -7,7 +7,6 @@ import javax.persistence.*;
 @Entity
 @Table
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 public class RegistrationToken {
@@ -28,4 +27,11 @@ public class RegistrationToken {
   @Column
   private String createdBy;
 
+
+  public RegistrationToken(String token, String validDuration, String email, String createdBy) {
+    this.token = token;
+    this.validDuration = validDuration;
+    this.email = email;
+    this.createdBy = createdBy;
+  }
 }
