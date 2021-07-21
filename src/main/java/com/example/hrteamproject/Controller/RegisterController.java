@@ -25,7 +25,6 @@ import java.util.Date;
 import java.util.UUID;
 
 @Controller
-@CrossOrigin
 @RequestMapping()
 public class RegisterController {
     @Autowired
@@ -37,8 +36,10 @@ public class RegisterController {
     @Autowired
     EmailService emailService;
 
-    @GetMapping("/Token/{email}")
-    public @ResponseBody ResponseEntity<GeneralResponse> createToken(@PathVariable String email) {
+    @CrossOrigin
+    @PostMapping("/token")
+    public @ResponseBody ResponseEntity<GeneralResponse> createToken(@RequestBody RegistrationToken registrationToken1) {
+        String email = registrationToken1.getEmail();
         String token = UUID.randomUUID().toString();
         RegistrationToken registrationToken = registrationTokenRepository.findByEmail(email);
 
@@ -53,7 +54,7 @@ public class RegisterController {
         return ResponseEntity.ok(new GeneralResponse(registrationToken.getEmail()));
     }
 
-
+    @CrossOrigin
     @PostMapping("/register")
     public void createAccount(@RequestBody User user, HttpServletResponse response) throws IOException {
         User curUser = userRepository.findByEmail(user.getEmail());
@@ -64,16 +65,16 @@ public class RegisterController {
             response.sendError(403,"email address already been used");
         }
     }
-
+    @CrossOrigin
     @PostMapping("/checkToken")
-    public @ResponseBody ResponseEntity<GeneralResponse> checkToken(HttpServletRequest request) {
-        String token = (String)request.getAttribute("token");
+    public @ResponseBody ResponseEntity<GeneralResponse> checkToken(@RequestBody RegistrationToken registrationToken1) {
+        String token = registrationToken1.getToken();
         RegistrationToken registrationToken = registrationTokenRepository.findByToken(token);
-        if(registrationToken == null || registrationToken.getToken().compareTo(getCurrentTime()) > 0) return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST, "false"), HttpStatus.BAD_REQUEST);
+        if(registrationToken == null || registrationToken.getValidDuration().compareTo(getCurrentTime()) < 0) return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST, "false"), HttpStatus.BAD_REQUEST);
         // 前端可以从body里的message这个属性里get到email，把username，password 还有email 包起来后再发到后端。
         return ResponseEntity.ok(new GeneralResponse(registrationToken.getEmail()));
     }
-
+    @CrossOrigin
     @PostMapping("/checkUserName")
     public @ResponseBody ResponseEntity<GeneralResponse> checkUserName(@RequestBody User user) {
         User user1 = userRepository.findByUserName(user.getUserName());
