@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface DocumentRepository extends CrudRepository<DigitalDocument,String> {
     List<DigitalDocument> findAll();
+    DigitalDocument findByTitle(String title);
 }

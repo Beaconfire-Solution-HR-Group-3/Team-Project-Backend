@@ -58,7 +58,8 @@ public class DocumentController {
     @CrossOrigin
     @PostMapping("/document/download")
     public @ResponseBody
-    ResponseEntity downloadDocument(@RequestBody DigitalDocument digitalDocument) {
+    ResponseEntity downloadDocument(@RequestBody DigitalDocument digitalDocument1) {
+        DigitalDocument digitalDocument = documentRepository.findByTitle(digitalDocument1.getTitle());
         Path path = Paths.get(digitalDocument.getTemplateLocation());
         Resource resource = null;
         try {
@@ -80,7 +81,7 @@ public class DocumentController {
         personalDocument.setEmployee(employeeRepository.findById(id));
 
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        Path path = Paths.get(fileBasePath + fileName);
+        Path path = Paths.get(fileBasePath + "/" + fileName);
         try {
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
