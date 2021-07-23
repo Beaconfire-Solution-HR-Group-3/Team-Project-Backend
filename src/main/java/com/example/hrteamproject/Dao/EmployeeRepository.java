@@ -13,6 +13,7 @@ import java.util.List;
 
 public interface EmployeeRepository extends CrudRepository<Employee,String> {
     Employee findById(int id);
+    Employee findByEmail(String email);
     List<Employee> findAll();
 
 

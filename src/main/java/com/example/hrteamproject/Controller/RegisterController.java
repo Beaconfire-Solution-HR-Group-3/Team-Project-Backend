@@ -1,8 +1,10 @@
 package com.example.hrteamproject.Controller;
 
 
+import com.example.hrteamproject.Dao.EmployeeRepository;
 import com.example.hrteamproject.Dao.RegistrationTokenRepository;
 import com.example.hrteamproject.Dao.UserRepository;
+import com.example.hrteamproject.Pojo.Employee;
 import com.example.hrteamproject.Pojo.RegistrationToken;
 import com.example.hrteamproject.Pojo.User;
 import com.example.hrteamproject.Pojo.response.ErrorResponse;
@@ -34,6 +36,9 @@ public class RegisterController {
     RegistrationTokenRepository registrationTokenRepository;
 
     @Autowired
+    EmployeeRepository employeeRepository;
+
+    @Autowired
     EmailService emailService;
 
     @CrossOrigin
@@ -56,11 +61,11 @@ public class RegisterController {
 
     @CrossOrigin
     @PostMapping("/register")
-    public void createAccount(@RequestBody User user, HttpServletResponse response) throws IOException {
-        User curUser = userRepository.findByEmail(user.getEmail());
+    public void createAccount(@RequestBody Employee employee, HttpServletResponse response) throws IOException {
+        Employee curUser = employeeRepository.findByEmail(employee.getEmail());
         GeneralResponse generalResponse = new GeneralResponse();
         if(curUser == null) {
-            userRepository.save(user);
+            employeeRepository.save(employee);
         } else {
             response.sendError(403,"email address already been used");
         }

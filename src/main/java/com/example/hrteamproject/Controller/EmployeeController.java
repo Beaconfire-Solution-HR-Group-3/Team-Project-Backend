@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -23,7 +25,7 @@ public class EmployeeController {
     @CrossOrigin
     @GetMapping("/employee")
     public @ResponseBody
-    ResponseEntity<List<Employee>> getAllDocuments(){
+    ResponseEntity<List<Employee>> getAllEmployees(){
         List<Employee> employeeList = employeeRepository.findAll();
         return ResponseEntity.ok(employeeList);
     }
@@ -37,6 +39,7 @@ public class EmployeeController {
     }
 //    @PostMapping("/address")
 //    public @ResponseBody
+
 
 
 

@@ -29,6 +29,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -75,13 +77,18 @@ public class DocumentController {
 
     @PostMapping("/document/upload")
     public @ResponseBody
-    ResponseEntity uploadDocument(@RequestParam("file") MultipartFile file, @RequestBody PersonalDocument personalDocument, HttpServletRequest request) {
-        int id = Integer.valueOf((String)request.getAttribute("employId"));
+    ResponseEntity uploadDocument(@RequestParam("file") MultipartFile file, @RequestParam("title") String title, @RequestParam("email") String email) {
+        PersonalDocument personalDocument = new PersonalDocument();
+        personalDocument.setEmployee(employeeRepository.findByEmail(email));
+        personalDocument.setTitle(title);
 
-        personalDocument.setEmployee(employeeRepository.findById(id));
+        String currentTime = getCurrentTime();
+
+        personalDocument.setCreateDate(currentTime);
 
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        Path path = Paths.get(fileBasePath + "/" + fileName);
+        String newFileName = title + "_" + employeeRepository.findByEmail(email).getFirstName() + "_" + currentTime + ".pdf";
+        Path path = Paths.get(fileBasePath + "/" + newFileName);
         try {
             Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
@@ -91,9 +98,18 @@ public class DocumentController {
                 .path("/files/download/")
                 .path(fileName)
                 .toUriString();
-        return ResponseEntity.ok("");
+        return ResponseEntity.ok("Upload Succeed!");
 
     }
+
+    private String getCurrentTime(){
+        SimpleDateFormat sdf = new SimpleDateFormat();// 格式化时间
+        sdf.applyPattern("yyyy-MM-dd-HH:mm:ss");// a为am/pm的标记
+        Date date = new Date();// 获取当前时间
+        return sdf.format(date);
+
+    }
+
 
 
 }

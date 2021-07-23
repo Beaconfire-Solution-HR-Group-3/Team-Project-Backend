@@ -96,33 +96,4 @@ public class Employee {
   @Column
   private String driverLisenceExpirationDate;
 
-
-  public Employee(int id, User user, Address address, ApplicationWorkFlow applicationWorkFlow, int managerId, House house, List<FacilityReportDetail> facilityReportDetailList, List<PersonalDocument> personalDocumentList, VisaStatus visaStatus, String firstName, String lastName, String middleName, String preferedName, String email, int cellphone, String alternatePhone, String gender, String ssn, String dob, String title, String startDate, String endDate, String avartar, String car, String driverLisence, String driverLisenceExpirationDate) {
-    this.id = id;
-    this.user = user;
-    this.address = address;
-    this.applicationWorkFlow = applicationWorkFlow;
-    this.managerId = managerId;
-    this.house = house;
-    this.facilityReportDetailList = facilityReportDetailList;
-    this.personalDocumentList = personalDocumentList;
-    this.visaStatus = visaStatus;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.middleName = middleName;
-    this.preferedName = preferedName;
-    this.email = email;
-    this.cellphone = cellphone;
-    this.alternatePhone = alternatePhone;
-    this.gender = gender;
-    this.ssn = ssn;
-    this.dob = dob;
-    this.title = title;
-    this.startDate = startDate;
-    this.endDate = endDate;
-    this.avartar = avartar;
-    this.car = car;
-    this.driverLisence = driverLisence;
-    this.driverLisenceExpirationDate = driverLisenceExpirationDate;
-  }
 }
