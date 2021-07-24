@@ -30,7 +30,7 @@ public class Contact {
   @Column(name = "employee_id")
   private int employeeId;
 
-  @OneToMany(mappedBy = "contact")
+  @OneToMany(mappedBy = "contact",fetch = FetchType.LAZY)
   private List<House> houseList;
 
 

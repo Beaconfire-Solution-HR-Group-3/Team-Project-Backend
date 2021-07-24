@@ -16,11 +16,11 @@ public class FacilityReportDetail {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
-  @OneToOne
+  @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "report_id")
   private FacilityReport facilityReport;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "employee_id")
   private Employee employee;
 

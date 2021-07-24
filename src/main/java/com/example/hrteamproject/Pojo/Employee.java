@@ -32,17 +32,17 @@ public class Employee {
   @Column
   private int managerId;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "house_id")
   private House house;
 
-  @OneToMany(mappedBy = "employee")
+  @OneToMany(mappedBy = "employee",fetch = FetchType.LAZY)
   private List<FacilityReportDetail> facilityReportDetailList;
 
-  @OneToMany(mappedBy = "employee")
+  @OneToMany(mappedBy = "employee",fetch = FetchType.LAZY)
   private List<PersonalDocument> personalDocumentList;
 
-  @OneToOne(mappedBy = "employee")
+  @OneToOne(mappedBy = "employee",fetch = FetchType.LAZY)
   private VisaStatus visaStatus;
 
   @Column

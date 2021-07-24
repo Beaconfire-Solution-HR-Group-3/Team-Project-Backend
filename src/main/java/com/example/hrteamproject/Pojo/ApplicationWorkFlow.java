@@ -18,7 +18,7 @@ public class ApplicationWorkFlow {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
-  @OneToOne
+  @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "employee_id")
   private Employee employee;
 

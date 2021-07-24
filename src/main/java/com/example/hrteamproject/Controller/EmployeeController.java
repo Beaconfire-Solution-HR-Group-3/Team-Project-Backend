@@ -1,8 +1,11 @@
 package com.example.hrteamproject.Controller;
 
+import com.example.hrteamproject.Dao.AddressRepository;
 import com.example.hrteamproject.Dao.EmployeeRepository;
+import com.example.hrteamproject.Pojo.Address;
 import com.example.hrteamproject.Pojo.DigitalDocument;
 import com.example.hrteamproject.Pojo.Employee;
+import com.example.hrteamproject.Server.AddressService;
 import com.example.hrteamproject.Server.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +25,9 @@ public class EmployeeController {
     @Autowired
     EmployeeService employeeService;
 
+    @Autowired
+    AddressService addressService;
+
     @CrossOrigin
     @GetMapping("/employee")
     public @ResponseBody
@@ -30,18 +36,26 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeList);
     }
 
+    @CrossOrigin
+    @GetMapping("/employee/{id}")
+    public @ResponseBody
+    ResponseEntity<Employee> getEmployeeDetail(@PathVariable int id){
+        Employee employee = employeeRepository.findByIdAndFetchAddressEagerly(id);
+        return ResponseEntity.ok(employee);
+    }
+
+
     @PostMapping("/employee")
     public @ResponseBody
     ResponseEntity updateEmployee(@RequestBody Employee employee) {
-        Employee employee1 = employeeRepository.findById(employee.getId());
-        employeeService.updateNameSection(employee1, employee);
+        employeeService.updateNameSection(employee);
         return ResponseEntity.ok("");
     }
-//    @PostMapping("/address")
-//    public @ResponseBody
 
-
-
-
-
+    @PostMapping("/address")
+    public @ResponseBody
+    ResponseEntity updateAddress(@RequestBody Address address) {
+        addressService.update(address);
+        return ResponseEntity.ok("");
+    }
 }

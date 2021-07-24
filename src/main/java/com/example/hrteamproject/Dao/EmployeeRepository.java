@@ -16,7 +16,8 @@ public interface EmployeeRepository extends CrudRepository<Employee,String> {
     Employee findByEmail(String email);
     List<Employee> findAll();
 
-
+    @Query("SELECT e FROM Employee e JOIN FETCH e.address WHERE e.id = (:id)")
+    public Employee findByIdAndFetchAddressEagerly(@Param("id") int id);
     //
 
 //    @Modifying  //需要执行一个更新操作

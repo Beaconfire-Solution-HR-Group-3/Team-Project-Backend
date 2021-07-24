@@ -19,9 +19,12 @@ public class FacilityReport {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "facility_id")
   private Facility facility;
+
+  @OneToOne(mappedBy = "facilityReport",fetch = FetchType.LAZY)
+  private FacilityReportDetail facilityReportDetail;
 
   @Column
   private String title;
@@ -34,6 +37,7 @@ public class FacilityReport {
 
   @Column
   private Status status;
+
 
 
 
