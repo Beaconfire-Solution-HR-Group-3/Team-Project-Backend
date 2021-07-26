@@ -1,5 +1,6 @@
 package com.example.hrteamproject.Pojo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class Address {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
+  @JsonBackReference
   @OneToOne
   @JoinColumn(name = "employee_id")
   private Employee employee;

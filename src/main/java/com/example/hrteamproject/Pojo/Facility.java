@@ -1,4 +1,7 @@
-package com.example.hrteamproject.Pojo;import lombok.AllArgsConstructor;
+package com.example.hrteamproject.Pojo;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,6 +22,7 @@ public class Facility {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
+  @JsonBackReference
   @ManyToOne
   @JoinColumn(name = "house_id")
   private House house;

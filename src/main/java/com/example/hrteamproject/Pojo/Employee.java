@@ -1,4 +1,8 @@
-package com.example.hrteamproject.Pojo;import lombok.AllArgsConstructor;
+package com.example.hrteamproject.Pojo;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,6 +26,7 @@ public class Employee {
   @JoinColumn(name = "user_id")
   private User user;
 
+  @JsonManagedReference
   @OneToOne(mappedBy = "employee", cascade=CascadeType.ALL)
   private Address address;
 
@@ -31,21 +36,24 @@ public class Employee {
   @Column
   private int managerId;
 
+  @JsonBackReference
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "house_id")
   private House house;
 
-  @OneToMany(mappedBy= "employee", ,fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+  @JsonManagedReference
+  @OneToMany(mappedBy= "employee", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
   private  List<Contact> contactList;
 
   @OneToMany(mappedBy = "employee")
   private List<FacilityReportDetail> facilityReportDetailList;
 
-  @OneToMany(mappedBy = "employee",fetch = FetchType.LAZY)
+  @JsonManagedReference
+  @OneToMany(mappedBy = "employee", fetch = FetchType.LAZY)
   private List<PersonalDocument> personalDocumentList;
 
-  @OneToOne(mappedBy = "employee", ,fetch = FetchType.LAZY, cascade=CascadeType.ALL)
-  
+  @JsonManagedReference
+  @OneToOne(mappedBy = "employee", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
   private VisaStatus visaStatus;
 
   @Column

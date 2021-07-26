@@ -12,6 +12,7 @@ public interface HouseRepositoty extends CrudRepository<House,String> {
 
 
     List<House> findAll();
+    House findById(int id);
 
     // 还没测试这里：1.不知道能否解决lazy fatch。2.可以优化这个join。
     @Query(nativeQuery = true, value = "SELECT * FROM house h " +

@@ -22,7 +22,10 @@ public class FileConfig {
         final FilterRegistrationBean<JwtFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new JwtFilter());
         registrationBean.setInitParameters(Collections.singletonMap("services.auth", authService));
-        registrationBean.addUrlPatterns("/protected/content");
+        registrationBean.addUrlPatterns("/employee");
+        registrationBean.addUrlPatterns("/*");
+        registrationBean.addUrlPatterns("/employee/*");
+
         return registrationBean;
     }
 //    @Bean

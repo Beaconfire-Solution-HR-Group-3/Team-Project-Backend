@@ -1,4 +1,6 @@
 package com.example.hrteamproject.Pojo;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,10 +29,12 @@ public class Contact {
   @Column
   private String cellphone;
 
+  @JsonBackReference
   @ManyToOne
   @JoinColumn(name = "employee_id")
   private Employee employee;
 
+  @JsonManagedReference
   @OneToMany(mappedBy = "contact",fetch = FetchType.LAZY)
   private List<House> houseList;
 

@@ -1,4 +1,7 @@
-package com.example.hrteamproject.Pojo;import lombok.AllArgsConstructor;
+package com.example.hrteamproject.Pojo;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +19,7 @@ public class VisaStatus {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
+  @JsonBackReference
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "employee_id")
   private Employee employee;

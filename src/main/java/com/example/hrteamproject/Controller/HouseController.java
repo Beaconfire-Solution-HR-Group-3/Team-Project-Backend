@@ -1,6 +1,7 @@
 package com.example.hrteamproject.Controller;
 
 
+import com.example.hrteamproject.Dao.EmployeeRepository;
 import com.example.hrteamproject.Dao.FacilityReportRepository;
 import com.example.hrteamproject.Dao.HouseRepositoty;
 import com.example.hrteamproject.Pojo.Employee;
@@ -15,6 +16,8 @@ import java.util.List;
 
 @Controller
 public class HouseController {
+    @Autowired
+    EmployeeRepository employeeRepository;
 
     @Autowired
     HouseRepositoty houseRepositoty;
@@ -31,11 +34,14 @@ public class HouseController {
     }
 
     @CrossOrigin
-    @GetMapping("/House/{id}")
+    @GetMapping("/House/{email}")
     public @ResponseBody
-    ResponseEntity<House> getHouseDetail(@PathVariable int id){
-        return ResponseEntity.ok(houseRepositoty.findByIdAndFetchFacilityAndEmployeesEagerly(id));
+    ResponseEntity<House> getHouseByEmail(@PathVariable String email){
+        House h = employeeRepository.findByEmailAndFetchHouseEagerly(email).getHouse();
+        int id = h.getId();
+        return ResponseEntity.ok(houseRepositoty.findById(id));
     }
+
 
     @CrossOrigin
     @GetMapping("/reports")

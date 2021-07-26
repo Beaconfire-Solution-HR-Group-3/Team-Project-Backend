@@ -85,6 +85,7 @@ public class DocumentController {
         String currentTime = getCurrentTime();
 
         personalDocument.setCreateDate(currentTime);
+        personalDocumentRepositoty.save(personalDocument);
 
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         String newFileName = title + "_" + employeeRepository.findByEmail(email).getFirstName() + "_" + currentTime + ".pdf";
