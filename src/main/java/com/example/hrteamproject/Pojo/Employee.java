@@ -12,18 +12,17 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-
 public class Employee {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
-  @OneToOne
+  @OneToOne(cascade=CascadeType.ALL)
   @JoinColumn(name = "user_id")
   private User user;
 
-  @OneToOne(mappedBy = "employee")
+  @OneToOne(mappedBy = "employee", cascade=CascadeType.ALL)
   private Address address;
 
   @OneToOne(mappedBy = "employee")
@@ -36,13 +35,17 @@ public class Employee {
   @JoinColumn(name = "house_id")
   private House house;
 
-  @OneToMany(mappedBy = "employee",fetch = FetchType.LAZY)
+  @OneToMany(mappedBy= "employee", ,fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+  private  List<Contact> contactList;
+
+  @OneToMany(mappedBy = "employee")
   private List<FacilityReportDetail> facilityReportDetailList;
 
   @OneToMany(mappedBy = "employee",fetch = FetchType.LAZY)
   private List<PersonalDocument> personalDocumentList;
 
-  @OneToOne(mappedBy = "employee",fetch = FetchType.LAZY)
+  @OneToOne(mappedBy = "employee", ,fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+  
   private VisaStatus visaStatus;
 
   @Column
@@ -61,7 +64,7 @@ public class Employee {
   private String email;
 
   @Column
-  private int cellphone;
+  private String cellphone;
 
   @Column
   private String alternatePhone;

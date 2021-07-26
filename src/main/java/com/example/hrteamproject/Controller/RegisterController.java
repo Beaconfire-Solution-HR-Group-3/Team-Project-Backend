@@ -1,12 +1,8 @@
 package com.example.hrteamproject.Controller;
 
 
-import com.example.hrteamproject.Dao.EmployeeRepository;
-import com.example.hrteamproject.Dao.RegistrationTokenRepository;
-import com.example.hrteamproject.Dao.UserRepository;
-import com.example.hrteamproject.Pojo.Employee;
-import com.example.hrteamproject.Pojo.RegistrationToken;
-import com.example.hrteamproject.Pojo.User;
+import com.example.hrteamproject.Dao.*;
+import com.example.hrteamproject.Pojo.*;
 import com.example.hrteamproject.Pojo.response.ErrorResponse;
 import com.example.hrteamproject.Pojo.response.GeneralResponse;
 import com.example.hrteamproject.Server.EmailService;
@@ -24,6 +20,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -37,6 +34,15 @@ public class RegisterController {
 
     @Autowired
     EmployeeRepository employeeRepository;
+
+    @Autowired
+    ContactRepository contactRepository;
+
+    @Autowired
+    AddressRepository addressRepository;
+
+    @Autowired
+    VisaStatusRepository visaStatusRepository;
 
     @Autowired
     EmailService emailService;
@@ -63,8 +69,16 @@ public class RegisterController {
     @PostMapping("/register")
     public void createAccount(@RequestBody Employee employee, HttpServletResponse response) throws IOException {
         Employee curUser = employeeRepository.findByEmail(employee.getEmail());
-        GeneralResponse generalResponse = new GeneralResponse();
         if(curUser == null) {
+            List<Contact> contactList = employee.getContactList();
+            for(Contact c : contactList){
+                c.setEmployee(employee);
+            }
+            VisaStatus vs = employee.getVisaStatus();
+            vs.setEmployee(employee);
+
+            Address address = employee.getAddress();
+            address.setEmployee(employee);
             employeeRepository.save(employee);
         } else {
             response.sendError(403,"email address already been used");

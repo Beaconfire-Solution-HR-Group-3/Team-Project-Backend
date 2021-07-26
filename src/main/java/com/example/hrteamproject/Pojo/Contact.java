@@ -25,10 +25,11 @@ public class Contact {
   @Column
   private String email;
   @Column
-  private int cellphone;
+  private String cellphone;
 
-  @Column(name = "employee_id")
-  private int employeeId;
+  @ManyToOne
+  @JoinColumn(name = "employee_id")
+  private Employee employee;
 
   @OneToMany(mappedBy = "contact",fetch = FetchType.LAZY)
   private List<House> houseList;
