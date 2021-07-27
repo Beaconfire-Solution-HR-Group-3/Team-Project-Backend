@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-@Configuration
+//@Configuration
 public class FileConfig {
 
     @Value("${services.auth}")
