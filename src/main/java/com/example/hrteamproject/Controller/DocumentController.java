@@ -1,14 +1,17 @@
 package com.example.hrteamproject.Controller;
 
 
+import com.example.hrteamproject.Dao.DigitalDocumentRepository;
 import com.example.hrteamproject.Dao.DocumentRepository;
 import com.example.hrteamproject.Dao.EmployeeRepository;
 import com.example.hrteamproject.Dao.PersonalDocumentRepositoty;
 import com.example.hrteamproject.Pojo.DigitalDocument;
+import com.example.hrteamproject.Pojo.Employee;
 import com.example.hrteamproject.Pojo.PersonalDocument;
 import com.example.hrteamproject.Pojo.RegistrationToken;
 import com.example.hrteamproject.Pojo.response.GeneralResponse;
 
+import com.example.hrteamproject.Server.UploadS3Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -46,6 +49,12 @@ public class DocumentController {
     @Autowired
     EmployeeRepository employeeRepository;
 
+    @Autowired
+    DigitalDocumentRepository digitalDocumentRepository;
+
+    @Autowired
+    UploadS3Service uploadS3Service;
+
     @Value("${upload.address}")
     String fileBasePath;
 
@@ -78,28 +87,26 @@ public class DocumentController {
     @PostMapping("/document/upload")
     public @ResponseBody
     ResponseEntity uploadDocument(@RequestParam("file") MultipartFile file, @RequestParam("title") String title, @RequestParam("email") String email) {
+
+        Employee employee = employeeRepository.findByEmail(email);
+        int nextPage = personalDocumentRepositoty.countAllByEmployee(employee) + 2;
         PersonalDocument personalDocument = new PersonalDocument();
         personalDocument.setEmployee(employeeRepository.findByEmail(email));
         personalDocument.setTitle(title);
 
         String currentTime = getCurrentTime();
-
         personalDocument.setCreateDate(currentTime);
-        personalDocumentRepositoty.save(personalDocument);
-
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         String newFileName = title + "_" + employeeRepository.findByEmail(email).getFirstName() + "_" + currentTime + ".pdf";
         Path path = Paths.get(fileBasePath + "/" + newFileName);
         try {
-            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
+            personalDocument.setPath(uploadS3Service.uploadToS3(file) + fileName);
+//            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/files/download/")
-                .path(fileName)
-                .toUriString();
-        return ResponseEntity.ok("Upload Succeed!");
+        personalDocumentRepositoty.save(personalDocument);
+        return ResponseEntity.ok(nextPage);
 
     }
 

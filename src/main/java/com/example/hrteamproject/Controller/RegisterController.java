@@ -70,15 +70,6 @@ public class RegisterController {
     public void createAccount(@RequestBody Employee employee, HttpServletResponse response) throws IOException {
         Employee curUser = employeeRepository.findByEmail(employee.getEmail());
         if(curUser == null) {
-            List<Contact> contactList = employee.getContactList();
-            for(Contact c : contactList){
-                c.setEmployee(employee);
-            }
-            VisaStatus vs = employee.getVisaStatus();
-            vs.setEmployee(employee);
-
-            Address address = employee.getAddress();
-            address.setEmployee(employee);
             employeeRepository.save(employee);
         } else {
             response.sendError(403,"email address already been used");
