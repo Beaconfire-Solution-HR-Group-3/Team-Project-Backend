@@ -84,12 +84,19 @@ public class DocumentController {
                 .body(resource);
     }
 
+    @GetMapping("/document/status")
+    public @ResponseBody
+    ResponseEntity getStatus(@RequestParam("email") String email) {
+        int nextPage = personalDocumentRepositoty.countAllByEmployee(employeeRepository.findByEmail(email)) + 1;
+        return ResponseEntity.ok(nextPage);
+    }
+
+
+
     @PostMapping("/document/upload")
     public @ResponseBody
     ResponseEntity uploadDocument(@RequestParam("file") MultipartFile file, @RequestParam("title") String title, @RequestParam("email") String email) {
 
-        Employee employee = employeeRepository.findByEmail(email);
-        int nextPage = personalDocumentRepositoty.countAllByEmployee(employee) + 2;
         PersonalDocument personalDocument = new PersonalDocument();
         personalDocument.setEmployee(employeeRepository.findByEmail(email));
         personalDocument.setTitle(title);
@@ -97,16 +104,17 @@ public class DocumentController {
         String currentTime = getCurrentTime();
         personalDocument.setCreateDate(currentTime);
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        String newFileName = title + "_" + employeeRepository.findByEmail(email).getFirstName() + "_" + currentTime + ".pdf";
+
+        String newFileName = title + "_" + employeeRepository.findByEmail(email).getFirstName() + ".pdf";
         Path path = Paths.get(fileBasePath + "/" + newFileName);
         try {
-            personalDocument.setPath(uploadS3Service.uploadToS3(file) + fileName);
+            personalDocument.setPath(uploadS3Service.uploadToS3(file,newFileName));
 //            Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
         } catch (Exception e) {
             e.printStackTrace();
         }
         personalDocumentRepositoty.save(personalDocument);
-        return ResponseEntity.ok(nextPage);
+        return ResponseEntity.ok("");
 
     }
 

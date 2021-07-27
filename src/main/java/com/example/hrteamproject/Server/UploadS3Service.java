@@ -41,7 +41,7 @@ public class UploadS3Service {
 
 
 
-    public String uploadToS3(MultipartFile file) {
+    public String uploadToS3(MultipartFile file, String name) {
         Regions clientRegion = Regions.fromName(region);
         try {
             AWSCredentials creds = new BasicAWSCredentials(awsAccessKeyId, awsSecretAccessKey);
@@ -49,10 +49,10 @@ public class UploadS3Service {
                     .withRegion(clientRegion).withCredentials(new AWSStaticCredentialsProvider(creds))
                     .build();
             ObjectMetadata data = new ObjectMetadata();
-            data.setContentType(file.getContentType());
+            data.setContentType("pdf");
             data.setContentLength(file.getSize());
-            s3Client.putObject(bucketName,file.getName(), file.getInputStream(),data);
-            String url = s3Client.getUrl(bucketName, file.getName()).toString();
+            s3Client.putObject(bucketName, name , file.getInputStream(),data);
+            String url = s3Client.getUrl(bucketName, name).toString();
             return url;
         } catch (AmazonServiceException e) {
             e.printStackTrace();
