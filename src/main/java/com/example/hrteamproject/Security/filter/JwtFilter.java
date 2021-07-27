@@ -21,14 +21,11 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String username = JwtUtil.getSubject(httpServletRequest, Constant.JWT_TOKEN_COOKIE_NAME, Constant.SIGNING_KEY);
-        // httpServletRequest.getRequestURL()
         log.info("dofilter");
-        String excludes = this.getFilterConfig().getInitParameter("exclusions");
-        if (username == null){
+        String url = httpServletRequest.getRequestURI();
+        if (username == null && !url.equals("/") && !url.equals("/register") && !url.startsWith("/notLoginHandler")){
             String authService = this.getFilterConfig().getInitParameter("services.auth");
-            log.info(authService);
-            httpServletResponse.sendRedirect(authService);
-
+            httpServletResponse.sendRedirect( "/notLoginHandler"+"?redirect=" + httpServletRequest.getRequestURL());
         } else {
             httpServletRequest.setAttribute("username", username);
             filterChain.doFilter(httpServletRequest, httpServletResponse);

@@ -8,6 +8,7 @@ public class ErrorResponse extends GeneralResponse{
     public ErrorResponse(HttpStatus status, String message) {
         super.setStatusCode(status);
         this.message = message;
+        super.setSuccess(false);
     }
 
     public String getMessage() {

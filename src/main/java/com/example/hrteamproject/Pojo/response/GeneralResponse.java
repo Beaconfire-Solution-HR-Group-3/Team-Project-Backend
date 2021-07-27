@@ -5,7 +5,15 @@ import org.springframework.http.HttpStatus;
 public class GeneralResponse {
     private HttpStatus statusCode = HttpStatus.OK;
     private Object data;
+    private boolean success = true;
 
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
     public GeneralResponse() {}
 
     public GeneralResponse(Object data) {

@@ -25,7 +25,7 @@ public class FileConfig {
     public FilterRegistrationBean<JwtFilter> jwtFilter(){
         Map<String,String> map = new HashMap<>();
         final FilterRegistrationBean<JwtFilter> registrationBean = new FilterRegistrationBean<>();
-        map.put("exclusions", "/register,/token,/druid/*");
+        map.put("exclusions", "/register");
         map.put("services.auth", authService);
         registrationBean.setFilter(new JwtFilter());
         registrationBean.setInitParameters(map);
