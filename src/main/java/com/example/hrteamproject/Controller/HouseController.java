@@ -2,10 +2,12 @@ package com.example.hrteamproject.Controller;
 
 
 import com.example.hrteamproject.Dao.EmployeeRepository;
+import com.example.hrteamproject.Dao.FacilityReportDetailRepository;
 import com.example.hrteamproject.Dao.FacilityReportRepository;
 import com.example.hrteamproject.Dao.HouseRepositoty;
 import com.example.hrteamproject.Pojo.Employee;
 import com.example.hrteamproject.Pojo.FacilityReport;
+import com.example.hrteamproject.Pojo.FacilityReportDetail;
 import com.example.hrteamproject.Pojo.House;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,9 @@ public class HouseController {
 
     @Autowired
     FacilityReportRepository facilityReportRepository;
+
+    @Autowired
+    FacilityReportDetailRepository facilityReportDetailRepository;
 
     @CrossOrigin
     @GetMapping("/House")
@@ -61,9 +66,19 @@ public class HouseController {
     }
 
     @CrossOrigin
+    @PostMapping("/comment/{id}")
+    public @ResponseBody
+    ResponseEntity writeComment(@RequestBody FacilityReportDetail facilityReportDetail, @PathVariable int id){
+        FacilityReport facilityReport = facilityReportRepository.findById(id);
+        facilityReportDetail.setFacilityReport(facilityReport);
+        facilityReportDetailRepository.save(facilityReportDetail);
+        return ResponseEntity.ok("");
+    }
+
+    @CrossOrigin
     @PostMapping("/reportDetail")
     public @ResponseBody
-    ResponseEntity<FacilityReport> getReportDetail(@RequestBody FacilityReport facilityReport){
-        return ResponseEntity.ok(facilityReportRepository.findByIdAndFetchDetailEagerly(facilityReport.getId()));
+    ResponseEntity<List<FacilityReportDetail>> getReportDetail(@RequestBody FacilityReport facilityReport){
+        return ResponseEntity.ok(facilityReportDetailRepository.findByFacilityReportId(facilityReport.getId()));
     }
 }

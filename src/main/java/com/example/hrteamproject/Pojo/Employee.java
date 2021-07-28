@@ -45,6 +45,7 @@ public class Employee {
   @OneToMany(mappedBy= "employee", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
   private  List<Contact> contactList;
 
+  @JsonManagedReference(value="b")
   @OneToMany(mappedBy = "employee")
   private List<FacilityReportDetail> facilityReportDetailList;
 

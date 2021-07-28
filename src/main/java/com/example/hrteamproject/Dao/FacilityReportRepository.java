@@ -11,7 +11,5 @@ import java.util.List;
 public interface FacilityReportRepository extends CrudRepository<FacilityReport,String> {
 
     List<FacilityReport> findAll();
-
-    @Query("SELECT f FROM FacilityReport f JOIN FETCH f.facilityReportDetail WHERE f.id = (:id)")
-    public FacilityReport findByIdAndFetchDetailEagerly(@Param("id") int id);
+    FacilityReport findById(int id);
 }

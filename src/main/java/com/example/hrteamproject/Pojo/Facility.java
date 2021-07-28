@@ -1,6 +1,7 @@
 package com.example.hrteamproject.Pojo;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +28,8 @@ public class Facility {
   @JoinColumn(name = "house_id")
   private House house;
 
-  @OneToMany(mappedBy = "facility", fetch = FetchType.LAZY)
+  @JsonManagedReference(value="a")
+  @OneToMany(mappedBy = "facility", fetch = FetchType.LAZY, cascade=CascadeType.ALL)
   private List<FacilityReport> facilityReportList;
 
   @Column

@@ -1,10 +1,13 @@
 package com.example.hrteamproject.Pojo;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table
@@ -19,12 +22,14 @@ public class FacilityReport {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id;
 
+  @JsonBackReference(value="a")
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "facility_id")
   private Facility facility;
 
-  @OneToOne(mappedBy = "facilityReport",fetch = FetchType.LAZY)
-  private FacilityReportDetail facilityReportDetail;
+  @JsonManagedReference(value="user-movement")
+  @OneToMany(mappedBy = "facilityReport",fetch = FetchType.LAZY)
+  private List<FacilityReportDetail> facilityReportDetailList;
 
   @Column
   private String title;
