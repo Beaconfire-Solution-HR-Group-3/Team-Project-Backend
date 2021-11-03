@@ -1,1 +1,1 @@
-# HR-team-project
+# team-project
